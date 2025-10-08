@@ -15,13 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-//import coil3.compose.rememberAsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.example.pokemonapp.MainViewModel
 import com.example.pokemonapp.R
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun SearchPokemon(mainViewModel: MainViewModel) {
 
@@ -44,7 +41,8 @@ fun SearchPokemon(mainViewModel: MainViewModel) {
         // Sprites
 
         Image(
-            painter = painterResource(id = pokemon?.sprites?.resource_id!!),
+            painter = rememberAsyncImagePainter(pokemon?.sprites?.front_default),
+            //painter = painterResource(id = pokemon?.sprites?.resource_id!!),
             contentDescription = "Pokemon Sprite",
             modifier = Modifier.size(128.dp)
         )

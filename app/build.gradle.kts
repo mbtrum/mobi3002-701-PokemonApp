@@ -57,9 +57,6 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // Coil Images
-    //implementation("io.coil-kt.coil3:coil-compose:3.3.0")
-
-    // Glide
-    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    // Coil Images (coil 3 does not work with older Kotlin version
+    implementation("io.coil-kt:coil-compose:2.7.0")
 }

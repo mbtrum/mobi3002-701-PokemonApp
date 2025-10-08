@@ -60,7 +60,7 @@ class MainViewModel : ViewModel() {
                 weight = 60,
                 height = 4,
                 sprites = Sprites(
-                    front_default = "",
+                    front_default = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
                     resource_id = R.drawable.pikachu
                 ),
                 abilities = listOf(
