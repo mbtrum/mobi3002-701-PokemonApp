@@ -57,6 +57,11 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // Coil Images (coil 3 does not work with older Kotlin version
+    // Coil Images (coil 3 does not work with older Kotlin version)
     implementation("io.coil-kt:coil-compose:2.7.0")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    // Retrofit GSON Converter
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 }

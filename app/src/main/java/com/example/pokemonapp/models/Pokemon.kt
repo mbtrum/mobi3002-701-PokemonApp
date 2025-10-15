@@ -1,5 +1,7 @@
 package com.example.pokemonapp.models
 
+import com.google.gson.annotations.SerializedName
+
 data class Pokemon(
     val name: String,
     val weight: Int,
@@ -10,12 +12,11 @@ data class Pokemon(
 )
 
 data class Sprites(
-    val front_default: String,
-    val resource_id: Int
+    @SerializedName("front_default") val frontDefault: String, // serialized name is the label in the API
 )
 
 data class Abilities(
-    val is_hidden: Boolean,
+    @SerializedName("is_hidden") val isHidden: Boolean,
     val slot: Int,
 
     val ability: Ability

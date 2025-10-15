@@ -6,83 +6,46 @@ import com.example.pokemonapp.models.Abilities
 import com.example.pokemonapp.models.Ability
 import com.example.pokemonapp.models.Pokemon
 import com.example.pokemonapp.models.Sprites
+import com.example.pokemonapp.services.PokemonService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainViewModel : ViewModel() {
-    /* add properties, functions, etc. */
-
+    // Pokemon model
     private val _pokemon = MutableStateFlow<Pokemon?>(null)
     val pokemon = _pokemon.asStateFlow()
 
-    init {
-        /* perform any initialization */
+    // Retrofit instance
+    val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl("https://pokeapi.co/api/v2/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
-        // Create Ditto
-        val pokemon = Pokemon(
-            name = "Ditto",
-            weight = 40,
-            height = 3,
-            sprites = Sprites(
-                front_default = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png",
-                resource_id = R.drawable.ditto
-            ),
-            abilities = listOf(
-                Abilities(
-                    is_hidden = false,
-                    slot = 1,
-                    ability = Ability(
-                        name = "limber"
-                    )
-                ),
-                Abilities(
-                    is_hidden = true,
-                    slot = 3,
-                    ability = Ability(
-                        name = "imposter"
-                    )
-                )
-            )
-        )
+    // Initialize interface service
+    val pokemonService: PokemonService = retrofit.create(PokemonService::class.java)
 
-        // Set the value of the pokemon class variable
-        _pokemon.value = pokemon
+//    init {
+//        Make API call inside a co-routine (async)
+//        viewModelScope.launch {
+//
+//            // fetch pokemon character from API
+//            //val pokemon = pokemonService.getPokemon()
+//
+//            //_pokemon.value = pokemon
+//        }
+//    }
 
-        // Change the pokemon value after 10 seconds
+    fun searchPokemon(name: String){
         viewModelScope.launch {
-            delay(10000)
+            // fetch pokemon character from API by name
+            val pokemon = pokemonService.getPokemon(name)
 
-            // Create Ditto
-            val pokemon = Pokemon(
-                name = "Pikachu",
-                weight = 60,
-                height = 4,
-                sprites = Sprites(
-                    front_default = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
-                    resource_id = R.drawable.pikachu
-                ),
-                abilities = listOf(
-                    Abilities(
-                        is_hidden = false,
-                        slot = 1,
-                        ability = Ability(
-                            name = "static"
-                        )
-                    ),
-                    Abilities(
-                        is_hidden = true,
-                        slot = 3,
-                        ability = Ability(
-                            name = "lightening rod"
-                        )
-                    )
-                )
-            )
-
-            // Set the value of the pokemon class variable
             _pokemon.value = pokemon
         }
     }
+
 }

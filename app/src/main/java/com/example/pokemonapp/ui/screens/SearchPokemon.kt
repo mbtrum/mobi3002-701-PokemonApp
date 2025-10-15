@@ -3,14 +3,20 @@ package com.example.pokemonapp.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,34 +31,68 @@ fun SearchPokemon(mainViewModel: MainViewModel) {
     // Get the pokemon object from stateflow
     val pokemon by mainViewModel.pokemon.collectAsState()
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
-    ){
-        // Pokemon props
+        // Store the text input
+        var text by remember { mutableStateOf("") }
 
-        Text(text = pokemon?.name.toString(), style = MaterialTheme.typography.titleLarge)
+        // Display Search Form
+        Row()
+        {
+            // Pokemon search form
 
-        Text(text = pokemon?.weight.toString(), style = MaterialTheme.typography.titleSmall)
+            TextField(
+                value = text,
+                onValueChange = { newText ->
+                    text = newText
+                }
+            )
 
-        Text(text = pokemon?.height.toString(), style = MaterialTheme.typography.titleSmall)
-
-        // Sprites
-
-        Image(
-            painter = rememberAsyncImagePainter(pokemon?.sprites?.front_default),
-            //painter = painterResource(id = pokemon?.sprites?.resource_id!!),
-            contentDescription = "Pokemon Sprite",
-            modifier = Modifier.size(128.dp)
-        )
-
-        // Abilities
-
-        Text("Abilities:", style = MaterialTheme.typography.titleSmall)
-
-        for(item in pokemon?.abilities!!){
-            Text(item.ability.name)
+            Button(
+                onClick = {
+                    mainViewModel.searchPokemon( name = text)
+                }
+            )
+            {
+                Text("Search Pokemon")
+            }
         }
-    }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+
+
+            // Pokemon props
+            if(pokemon != null) {
+                Text(text = pokemon?.name.toString(), style = MaterialTheme.typography.titleLarge)
+
+                Text(
+                    text = "Weight: " + pokemon?.weight.toString() + "lbs",
+                    style = MaterialTheme.typography.titleSmall
+                )
+
+                Text(
+                    text = "Height: " + pokemon?.height.toString() + "ft",
+                    style = MaterialTheme.typography.titleSmall
+                )
+
+                // Sprites
+
+                Image(
+                    painter = rememberAsyncImagePainter(pokemon?.sprites?.frontDefault),
+                    contentDescription = "Pokemon Sprite",
+                    modifier = Modifier.size(128.dp)
+                )
+
+                // Abilities
+
+                Text("Abilities:", style = MaterialTheme.typography.titleSmall)
+
+                for (item in pokemon?.abilities!!) {
+                    Text(item.ability.name)
+                }
+            }
+        }
+
 }
